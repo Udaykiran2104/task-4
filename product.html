@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Listing</title>
+  <style>
+    .product { border: 1px solid #ccc; margin: 1rem; padding: 1rem; width: 200px; }
+    .grid { display: flex; flex-wrap: wrap; }
+    .controls { margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="controls">
+    <label>Category:
+      <select id="categoryFilter">
+        <option value="all">All</option>
+        <option value="electronics">Electronics</option>
+        <option value="clothing">Clothing</option>
+      </select>
+    </label>
+    <label>Sort By:
+      <select id="sortSelect">
+        <option value="price">Price</option>
+        <option value="rating">Rating</option>
+      </select>
+    </label>
+  </div>
+
+  <div id="productContainer" class="grid"></div>
+
+  <script>
+    const products = [
+      { name: "Phone", category: "electronics", price: 299, rating: 4.5 },
+      { name: "T-Shirt", category: "clothing", price: 25, rating: 4.0 },
+      { name: "Laptop", category: "electronics", price: 999, rating: 4.8 },
+      { name: "Jeans", category: "clothing", price: 50, rating: 4.2 },
+    ];
+
+    const container = document.getElementById("productContainer");
+    const categoryFilter = document.getElementById("categoryFilter");
+    const sortSelect = document.getElementById("sortSelect");
+
+    function displayProducts() {
+      const category = categoryFilter.value;
+      const sortBy = sortSelect.value;
+
+      let filtered = category === "all" ? products : products.filter(p => p.category === category);
+      filtered.sort((a, b) => a[sortBy] - b[sortBy]);
+
+      container.innerHTML = "";
+      filtered.forEach(p => {
+        const div = document.createElement("div");
+        div.className = "product";
+        div.innerHTML = `<h3>${p.name}</h3><p>Price: $${p.price}</p><p>Rating: ${p.rating}</p>`;
+        container.appendChild(div);
+      });
+    }
+
+    categoryFilter.onchange = displayProducts;
+    sortSelect.onchange = displayProducts;
+
+    displayProducts();
+  </script>
+</body>
+</html>
